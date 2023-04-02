@@ -3,9 +3,8 @@ import numpy as np
 import time
 from . import utils
 from . import find_root
-
 from tqdm import tqdm
-from functools import partial
+
 
 __version__ = "0.0.1"
 

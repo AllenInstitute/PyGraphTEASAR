@@ -3,7 +3,7 @@
 import numpy as np
 from scipy import sparse
 from . import utils
-from . import skeletonize_components
+from . import graph_teasar_all
 from functools import partial
 from . import find_root
 
@@ -34,12 +34,16 @@ def find_neuron_root(csgraph, valid=None, is_soma_pt=None, soma_d=None):
             )
         else:
 
-            root, pred, root_ds, temp_valid = find_root.find_graph_root(csgraph, valid=temp_valid)
+            root, pred, root_ds, temp_valid = find_root.find_graph_root(
+                csgraph, valid=temp_valid
+            )
         temp_valid[is_soma_pt] = False
 
     if root is None:
         # there is no soma close, so use far point heuristic
-        root, _, pred, _, root_ds = find_root.find_far_points_graph(csgraph, valid=temp_valid)
+        root, _, pred, _, root_ds = find_root.find_far_points_graph(
+            csgraph, valid=temp_valid
+        )
     temp_valid[root] = False
     assert np.all(~np.isinf(root_ds[temp_valid]))
     return root, root_ds, pred, temp_valid
@@ -110,7 +114,7 @@ def skeletonize_mesh(
     if csgraph is None:
         raise ValueError("must pass one of edges, faces or csgraph")
 
-    return_vals = skeletonize_components(
+    return_vals = graph_teasar_all(
         csgraph,
         root_index=root_index,
         root_func=root_func,

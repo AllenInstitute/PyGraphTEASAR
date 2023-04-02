@@ -64,7 +64,7 @@ def test_graph_teasar_component_simple():
     assert path_lengths[0] == 2.0
 
 
-def test_skeletonize_components():
+def test_graph_teasar_all():
     vertices = np.array([[0, 0], [0, 1], [1, 1], [1, 0], [2, 0], [2, 1]])
     edges = np.array([[0, 1], [1, 2], [2, 3], [3, 0], [4, 5]])
 
@@ -82,7 +82,7 @@ def test_skeletonize_components():
     assert path_lengths[1][0] == 1.0
 
 
-def test_skeletonize_components_cc_vertex_thresh():
+def test_graph_teasar_all_cc_vertex_thresh():
     vertices = np.array([[0, 0], [0, 1], [1, 1], [1, 0], [2, 0], [2, 1]])
     edges = np.array([[0, 1], [1, 2], [2, 3], [3, 0], [4, 5]])
 
@@ -97,7 +97,7 @@ def test_skeletonize_components_cc_vertex_thresh():
     assert path_lengths[0][0] == 2.0
 
 
-def test_skeletonize_components_invalidation_d():
+def test_graph_teasar_all_invalidation_d():
     vertices = np.array(
         [
             [0, 0],
