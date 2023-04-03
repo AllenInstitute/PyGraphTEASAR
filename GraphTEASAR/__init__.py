@@ -9,6 +9,20 @@ from tqdm import tqdm
 __version__ = "0.0.2"
 
 
+class EmptyContext:
+    def __init__(self, total=None):
+        pass
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, traceback):
+        pass
+
+    def update(self, n):
+        pass
+
+
 def graph_teasar_component(
     csgraph,
     root=None,
@@ -19,6 +33,7 @@ def graph_teasar_component(
     invalidation_d=10000,
     return_timing=False,
     return_map=False,
+    progress: bool = True,
 ):
     """core skeletonization function used to skeletonize a single component of a mesh
 
@@ -43,6 +58,8 @@ def graph_teasar_component(
         whether to return timing information, by default False
     return_map : bool, optional
         whether to return the distance map, by default False
+    progress : bool, optional
+        whether to show a progress bar, by default True
 
     Returns
     -------
@@ -111,7 +128,12 @@ def graph_teasar_component(
     start = time.time()
     time_arrays = [[], [], [], [], []]
 
-    with tqdm(total=total_to_visit) as pbar:
+    if progress:
+        context = tqdm
+    else:
+        context = EmptyContext
+
+    with context(total=total_to_visit) as pbar:
         # keep looping till all vertices have been invalidated
         while np.sum(valid) > 0:
             k += 1
@@ -224,6 +246,7 @@ def graph_teasar(
     invalidation_d=10000,
     cc_vertex_thresh=0,
     return_map=False,
+    progress: bool = True,
 ):
     """skeletonize a mesh, seperately for each connected component in the mesh above a threshold
 
@@ -258,6 +281,8 @@ def graph_teasar(
         minimum number of vertices in a connected component to skeletonize, by default 0
     return_map : bool, optional
         whether to return the map from mesh vertices to skeleton vertices, by default False
+    progress : bool, optional
+        whether to show a progress bar, by default True
 
     Returns
     -------
@@ -320,6 +345,7 @@ def graph_teasar(
                 valid=valid,
                 invalidation_d=invalidation_d,
                 return_map=return_map,
+                progress=progress,
             )
             if return_map is False:
                 paths, path_lengths = teasar_output

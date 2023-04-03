@@ -53,12 +53,12 @@ def skeletonize_mesh(
     vertices: np.ndarray,
     edges: np.ndarray = None,
     faces: np.ndarray = None,
-    csgraph: sparse.csr_matrix = None,
     invalidation_d: float = 10000,
     cc_vertex_thresh: int = 0,
     return_map: bool = False,
     root_func: callable = find_root.find_graph_root,
     root_index: int = None,
+    progress:bool =True
 ):
     """Skeletonizes a mesh by first finding the connected components of the mesh
     and then skeletonizing each connected component. The connected components are
@@ -74,9 +74,6 @@ def skeletonize_mesh(
     faces : np.ndarray, optional
         Kx3 array of face indices, by default None
         (must pass one of edges, faces or csgraph)
-    csgraph : sparse.csr_matrix, optional
-        NxN sparse matrix of edge weights, by default None
-        (must pass one of edges, faces or csgraph)
     invalidation_d : float, optional
         distance threshold for invalidating edges, by default 10000
     cc_vertex_thresh : int, optional
@@ -85,6 +82,8 @@ def skeletonize_mesh(
         whether to return the map of vertex indices to skeleton indices, by default False
     root_index : int, optional
         index of root vertex, by default None
+    progress : bool, optional
+        whether to show a progress bar, by default True
 
     Returns
     -------
@@ -103,16 +102,11 @@ def skeletonize_mesh(
     """
     if faces is not None:
         if edges is not None:
-            raise Warning("edges will overwrite faces")
+            raise ValueError("Pass one of faces or edges")
         else:
             edges = utils.faces_to_edges(faces)
-    if edges is not None:
-        if csgraph is not None:
-            raise Warning("csgraph will override edges and faces")
-        else:
-            csgraph = utils.create_spatial_csgraph(vertices, edges)
-    if csgraph is None:
-        raise ValueError("must pass one of edges, faces or csgraph")
+    csgraph = utils.create_spatial_csgraph(vertices, edges)
+
 
     return_vals = graph_teasar(
         csgraph,
@@ -121,6 +115,7 @@ def skeletonize_mesh(
         invalidation_d=invalidation_d,
         cc_vertex_thresh=cc_vertex_thresh,
         return_map=return_map,
+        progress=progress
     )
     return return_vals
 
@@ -129,13 +124,13 @@ def skeletonize_neuron(
     vertices,
     edges: np.ndarray = None,
     faces: np.ndarray = None,
-    csgraph: sparse.csr_matrix = None,
     root_index: int = None,
     soma_pt: np.array = None,
     soma_thresh: float = 10000,
     invalidation_d: float = 10000,
     cc_vertex_thresh: int = 100,
     return_map: bool = False,
+    progress:bool =True
 ):
     """skeletonization routine for skeletonizing a neuron
     makes extra assumptions about how you want to handle to handle root finding
@@ -155,13 +150,10 @@ def skeletonize_neuron(
         NxK (usually Nx3) array of vertex positions
     edges : np.ndarray, optional
         Mx2 array of edge indices, by default None
-        (must pass one of edges, faces or csgraph)
+        (must pass one of edges or faces)
     faces : np.ndarray, optional
         Kx3 array of face indices, by default None
-        (must pass one of edges, faces or csgraph)
-    csgraph : sparse.csr_matrix, optional
-        NxN sparse matrix of edge weights, by default None
-        (must pass one of edges, faces or csgraph)
+        (must pass one of edges or faces)
     root_index : int, optional
         index of root vertex, by default None
         If you have precalcualted which vertex you want to be the root, pass it here
@@ -182,6 +174,8 @@ def skeletonize_neuron(
         (units is integers, so will vary depending on graph resolution)
     return_map : bool, optional
         whether to return the map of vertex indices to skeleton indices, by default False
+    progress : bool, optional
+        whether to show a progress bar, by default True
 
     Returns
     -------
@@ -220,11 +214,11 @@ def skeletonize_neuron(
         vertices,
         edges,
         faces,
-        csgraph,
         invalidation_d=invalidation_d,
         cc_vertex_thresh=cc_vertex_thresh,
         return_map=return_map,
         root_func=root_func,
         root_index=root_index,
+        progress=progress
     )
     return return_vals

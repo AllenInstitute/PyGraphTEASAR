@@ -89,7 +89,7 @@ def test_graph_teasar_cc_vertex_thresh():
     G = utils.create_spatial_csgraph(vertices, edges)
 
     # Test with cc_vertex_thresh=3 (should filter out the second component)
-    paths, roots, path_lengths = graph_teasar(G, cc_vertex_thresh=3)
+    paths, roots, path_lengths = graph_teasar(G, cc_vertex_thresh=3, progress=False)
 
     assert len(paths) == 1
     assert len(path_lengths) == 1
