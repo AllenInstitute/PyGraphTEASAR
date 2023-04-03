@@ -1,4 +1,5 @@
 [![Documentation Status](https://readthedocs.org/projects/pygraphteasar/badge/?version=latest)](https://pygraphteasar.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://github.com/AllenInstitute/PyGraphTEASAR/workflows/test_on_push_and_pr/badge.svg)](https://github.com/AllenInstitute/PyGraphTEASAR/actions)
 
 # GraphTEASAR
 
