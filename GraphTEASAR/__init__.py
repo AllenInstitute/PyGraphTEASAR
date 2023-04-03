@@ -217,7 +217,7 @@ def graph_teasar_component(
     return out_tuple
 
 
-def graph_teasar_all(
+def graph_teasar(
     csgraph,
     root_index=None,
     root_function=find_root.find_graph_root,

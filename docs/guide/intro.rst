@@ -42,14 +42,14 @@ Example
 
 The other arguments are optional and generally help if you have already calculated some of the information needed to run the algorithm.  They are described in the docstring. What is returned is a list of the paths that the algorithm found, along with the total path length of each path.  Optionally you can return a map of which vertices were invalidated by which vertex on the path. This essentially provides a way to associated each node of the graph with a node of the skeleton. 
 
-The next most complex function is :func:`GraphTEASAR.graph_teasar_all` which will skeletonize a graph that may have multiple connected components. It will skeletonize each component separately, and return all the results.  The find_root function that is passed will be passed a valid mask for each of the connected components, so it can know what vertices to be selecting from when picking a root for each component. 
+The next most complex function is :func:`GraphTEASAR.graph_teasar` which will skeletonize a graph that may have multiple connected components. It will skeletonize each component separately, and return all the results.  The find_root function that is passed will be passed a valid mask for each of the connected components, so it can know what vertices to be selecting from when picking a root for each component. 
 
 Example
 ::
 
-    from GraphTEASAR import graph_teasar_all
+    from GraphTEASAR import graph_teasar
 
-    output = graph_teasar_all(graph,
+    output = graph_teasar(graph,
                               invalidation_d=10,
                               cc_vertex_threshold=10,
                               return_map=True)

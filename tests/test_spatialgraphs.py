@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import sparse
 import pytest
-from GraphTEASAR import utils, graph_teasar_component, graph_teasar_all
+from GraphTEASAR import utils, graph_teasar_component, graph_teasar
 from GraphTEASAR.utils import create_spatial_csgraph
 from GraphTEASAR.find_root import find_far_points_graph
 
@@ -64,13 +64,13 @@ def test_graph_teasar_component_simple():
     assert path_lengths[0] == 2.0
 
 
-def test_graph_teasar_all():
+def test_graph_teasar():
     vertices = np.array([[0, 0], [0, 1], [1, 1], [1, 0], [2, 0], [2, 1]])
     edges = np.array([[0, 1], [1, 2], [2, 3], [3, 0], [4, 5]])
 
     G = create_spatial_csgraph(vertices, edges)
 
-    paths, roots, path_lengths = graph_teasar_all(G, cc_vertex_thresh=0)
+    paths, roots, path_lengths = graph_teasar(G, cc_vertex_thresh=0)
 
     # Two components with 1 path each
     assert len(paths) == 2
@@ -82,14 +82,14 @@ def test_graph_teasar_all():
     assert path_lengths[1][0] == 1.0
 
 
-def test_graph_teasar_all_cc_vertex_thresh():
+def test_graph_teasar_cc_vertex_thresh():
     vertices = np.array([[0, 0], [0, 1], [1, 1], [1, 0], [2, 0], [2, 1]])
     edges = np.array([[0, 1], [1, 2], [2, 3], [3, 0], [4, 5]])
 
     G = utils.create_spatial_csgraph(vertices, edges)
 
     # Test with cc_vertex_thresh=3 (should filter out the second component)
-    paths, roots, path_lengths = graph_teasar_all(G, cc_vertex_thresh=3)
+    paths, roots, path_lengths = graph_teasar(G, cc_vertex_thresh=3)
 
     assert len(paths) == 1
     assert len(path_lengths) == 1
@@ -97,7 +97,7 @@ def test_graph_teasar_all_cc_vertex_thresh():
     assert path_lengths[0][0] == 2.0
 
 
-def test_graph_teasar_all_invalidation_d():
+def test_graph_teasar_invalidation_d():
     vertices = np.array(
         [
             [0, 0],
@@ -142,7 +142,7 @@ def test_graph_teasar_all_invalidation_d():
 
     G = utils.create_spatial_csgraph(vertices, edges)
 
-    paths, roots, path_lengths = graph_teasar_all(
+    paths, roots, path_lengths = graph_teasar(
         G, root_index=0, cc_vertex_thresh=0, invalidation_d=1.1
     )
     assert len(paths) == 1
@@ -154,7 +154,7 @@ def test_graph_teasar_all_invalidation_d():
     assert path_lengths[0][1] == 5.0
     assert path_lengths[0][2] == 3.0
 
-    paths, roots, path_lengths = graph_teasar_all(
+    paths, roots, path_lengths = graph_teasar(
         G, root_index=0, cc_vertex_thresh=0, invalidation_d=3.1
     )
     assert len(paths) == 1
@@ -165,7 +165,7 @@ def test_graph_teasar_all_invalidation_d():
     assert path_lengths[0][0] == 10.0
     assert path_lengths[0][1] == 5.0
 
-    paths, roots, path_lengths = graph_teasar_all(
+    paths, roots, path_lengths = graph_teasar(
         G, root_index=0, cc_vertex_thresh=0, invalidation_d=5.1
     )
     assert len(paths) == 1

@@ -3,7 +3,7 @@
 import numpy as np
 from scipy import sparse
 from . import utils
-from . import graph_teasar_all
+from . import graph_teasar
 from functools import partial
 from . import find_root
 
@@ -114,7 +114,7 @@ def skeletonize_mesh(
     if csgraph is None:
         raise ValueError("must pass one of edges, faces or csgraph")
 
-    return_vals = graph_teasar_all(
+    return_vals = graph_teasar(
         csgraph,
         root_index=root_index,
         root_func=root_func,
