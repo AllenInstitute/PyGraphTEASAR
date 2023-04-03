@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/pygraphteasar/badge/?version=latest)](https://pygraphteasar.readthedocs.io/en/latest/?badge=latest)
+
 # GraphTEASAR
 
 GraphTEASAR is a Python library for running the TEASAR algorithm on spatial graphs for skeletonization. It provides a graph generalization of the TEASAR algorithm, which was originally designed to run on voxelized data but can be applied to any abstract graph with weights.
