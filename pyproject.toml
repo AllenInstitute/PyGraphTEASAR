@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.poetry]
 name = "GraphTEASAR"
-version = "0.0.2"
+version = "0.1.0"
 description = "A python library for running the TEASAR algorithm on spatial graphs for skeletonization."
 authors = ["Forrest Collman <forrestc@alleninstute.org>", "Casey Schneider-Mizell <caseys@alleninstitute.org>"]
 repository = "https://github.com/AllenInstitute/PyGraphTEASAR"

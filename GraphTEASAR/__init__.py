@@ -6,7 +6,7 @@ from . import find_root
 from tqdm import tqdm
 
 
-__version__ = "0.0.2"
+__version__ = "0.1.0"
 
 
 def graph_teasar_component(
