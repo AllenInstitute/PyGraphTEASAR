@@ -9,20 +9,6 @@ from tqdm import tqdm
 __version__ = "0.0.2"
 
 
-class EmptyContext:
-    def __init__(self, total=None):
-        pass
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, traceback):
-        pass
-
-    def update(self, n):
-        pass
-
-
 def graph_teasar_component(
     csgraph,
     root=None,
@@ -128,12 +114,7 @@ def graph_teasar_component(
     start = time.time()
     time_arrays = [[], [], [], [], []]
 
-    if progress:
-        context = tqdm
-    else:
-        context = EmptyContext
-
-    with context(total=total_to_visit) as pbar:
+    with tqdm(total=total_to_visit, disable=not progress) as pbar:
         # keep looping till all vertices have been invalidated
         while np.sum(valid) > 0:
             k += 1
